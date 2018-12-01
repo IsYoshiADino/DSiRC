@@ -39,7 +39,7 @@ int main(void) {
 	while(1) {
 		iprintf("DSiRC - Version 1.0.0");
 		
-	    char name[128]; // I think thats enough.
+	    char name[128]; // I think that's enough.
 		char server[128]; // urls can't be longer, can they?
 		char channel[128]; // the channel name should be short.
 		
