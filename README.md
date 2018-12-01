@@ -1,5 +1,5 @@
-# DSiRC
-## ![logo](https://raw.githubusercontent.com/Apfel/DSiRC/master/icon.bmp) **A simple IRC client for the Nintendo DSi.**
+# ![logo](https://raw.githubusercontent.com/Apfel/DSiRC/master/icon.bmp) DSiRC
+## **A simple IRC client for the Nintendo DSi.**
 
 Currently being worked on. I would love to see you contributing to this project!
 
