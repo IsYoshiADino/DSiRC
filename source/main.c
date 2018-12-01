@@ -1,4 +1,4 @@
-#include <dswifi9.h>
+//#include <dswifi9.h>
 #include <nds.h>
 #include <maxmod9.h>
 #include <netinet/in.h>
@@ -52,13 +52,13 @@ int main(void) {
 		iprintf("\nWhat IRC channel do you want to use?\n");
 		scanf("%s", channel);
 		
-		if(!Wifi_InitDefault(WFC_CONNECT)) {
+		/*if(!Wifi_InitDefault(WFC_CONNECT)) {
 			iprintf("Failed to initialize the WiFi connection!");
 			return 1;
 		} else {
 			iprintf("\nConnected to the Internet, time to connect to the IRC server.");
 			// Server connection stuff
-		}
+		}*/
 		
 		swiWaitForVBlank();
 		consoleClear();
