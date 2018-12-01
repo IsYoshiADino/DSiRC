@@ -56,7 +56,7 @@ int main(void) {
 			iprintf("Failed to initialize the WiFi connection!");
 			return 1;
 		} else {
-			iprintf("\nConnected to the Internet, time to connect to the IRC server.")
+			iprintf("\nConnected to the Internet, time to connect to the IRC server.");
 			// Server connection stuff
 		}
 		
