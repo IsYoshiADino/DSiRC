@@ -1,13 +1,20 @@
+// devkitARM and libnds includes
 //#include <dswifi9.h>
 #include <nds.h>
 #include <maxmod9.h>
-//#include <netinet/in.h>
-//#include <netdb.h>
-//#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <sys/socket.h>
 
+// Custom includes
+#include "libircclient.h"
+#include "gl2d.h"
+
+// System includes
 #include <stdio.h>
 #include <string.h>
 
+// Build-only includes
 #include "image.h"
 #include "soundbank.h"
 #include "soundbank_bin.h"
@@ -24,13 +31,19 @@ void OnKeyPressed(int key) {
 	if(key > 0) iprintf("%c", key);
 }
 
+void OpenBrowser(char* url) {
+	// soon:tm:
+}
 
 void Save(Settings settings) {
-	// will do that soon:tm:
+	// soon:tm:
 }
 
 void Connect(Settings settings) {
-	/*if(!Wifi_InitDefault(WFC_CONNECT)) {
+	/* soon:tm:
+	At least there some weirdo code
+
+    if(!Wifi_InitDefault(WFC_CONNECT)) {
 		iprintf("Failed to initialize the WiFi connection!");
 		return 1;
 	} else {
@@ -53,7 +66,7 @@ int main(void) {
 	
 	Keyboard *kbd = keyboardDemoInit();
 	kbd->OnKeyPressed = OnKeyPressed;
-	
+    
 	bgInit(3, BgType_Bmp16, BgSize_B16_256x256, 0,0);
 	decompress(imageBitmap, BG_GFX,  LZ77Vram);
 	
