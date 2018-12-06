@@ -11,6 +11,3 @@ Currently being worked on. I would love to see you contributing to this project!
 | Opening URLs in the DSi Web browser       | No              |
 | Showing supported image file types        | No              |
 | Server list and configuration files       | No              |
-
-## Screenshots
-![Beta menu](https://cdn.discordapp.com/attachments/351097309926391839/518561159234846730/DSiRC.png)
