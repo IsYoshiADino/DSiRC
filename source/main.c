@@ -1,5 +1,5 @@
 // devkitARM and libnds includes
-//#include <dswifi9.h>
+#include <dswifi9.h>
 #include <nds.h>
 #include <maxmod9.h>
 #include <netinet/in.h>
@@ -22,9 +22,9 @@
 static mm_sound_effect notify = { { SFX_NOTIFY }, (int)(1.0f * (1<<10)), 0, 255, 255, };
 
 struct Settings {
-	char[128] Name; // The Username for the User, of course.
-	char[128] Server; // We need something which can get our IP in the end.
-	char[128] Channel; // Just so we don't feel lonely.
+	char* Name; // The Username for the User, of course.
+	char* Server; // We need something which can get our IP in the end.
+	char* Channel; // Just so we don't feel lonely.
 };
 
 void OnKeyPressed(int key) {
@@ -35,21 +35,18 @@ void OpenBrowser(char* url) {
 	// soon:tm:
 }
 
-void Save(Settings settings) {
+void Save(struct Settings settings) {
 	// soon:tm:
 }
 
-void Connect(Settings settings) {
-	/* soon:tm:
-	At least there some weirdo code
-
+void ConnectIRC(struct Settings settings) {
     if(!Wifi_InitDefault(WFC_CONNECT)) {
 		iprintf("Failed to initialize the WiFi connection!");
 		return 1;
 	} else {
 		iprintf("\nConnected to the Internet, time to connect to the IRC server.");
 		// Server connection stuff
-	}*/
+	}
 }
 
 int main(void) {
@@ -75,9 +72,9 @@ int main(void) {
 		
 		// At least you can set something.
 		struct Settings settings;
-	    char name[128]; // I think that's enough.
-		char server[128]; // urls can't be longer, can they?
-		char channel[128]; // the channel name should be short.
+	    char* name; // I think that's enough.
+		char* server; // urls can't be longer, can they?
+		char* channel; // the channel name should be short.
 		
 		// So lemme spy on you for a short time
 		iprintf("\nWhat's your Username?\n");
@@ -96,19 +93,29 @@ int main(void) {
 		swiWaitForVBlank();
 		consoleClear();
 		
+		// Is this actually better?
+		int keyPressed;
+
 		// Let the user choose something.
-		int keyPressed = keysDown();
-		iprintf("Current settings:\nName: %s\nServer: %s\nChannel: %s\n\nWould you like to save your settings?\n(A) Yes  (B) No  (X) Return", settings.Name, settings.Server, settings.Channel);
-		if (keyPressed & KEY_A ) {
-			Save(settings);
-			Connect(settings);
-		}
-		if (keyPressed & KEY_B) {
-			Connect(settings);
-		} 
-		if (keyPressed & KEY_X) {
-			continue;
-		} 
+		iprintf("Current settings:\nName: %s\nServer: %s\nChannel: %s\n\nWould you like to save your settings?\n(A) Yes  (B) No  (START) Return", settings.Name, settings.Server, settings.Channel);
+		do {
+			swiWaitForVBlank();
+			scanKeys();
+
+			keyPressed = keysDown();
+			if (keyPressed & KEY_A ) {
+				Save(settings);
+				Connect(settings);
+			}
+			if (keyPressed & KEY_B) {
+				Connect(settings);
+			} 
+			if (keyPressed & KEY_START) break;
+		} while(1);
+
+		// Just to clean after pressing X.
+		swiWaitForVBlank();
+		consoleClear();
 	}
 	return 0;
 }
