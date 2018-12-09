@@ -1,20 +1,16 @@
-// devkitARM and libnds includes
-#include <dswifi9.h>
-#include <nds.h>
+//#include <dswifi9.h>
+#include <fat.h>
 #include <maxmod9.h>
-#include <netinet/in.h>
+#include <nds.h>
 #include <netdb.h>
-#include <sys/socket.h>
-
-// Custom includes
-#include "libircclient.h"
-#include "gl2d.h"
-
-// System includes
+#include <netinet/in.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
-// Build-only includes
+#include "libircclient.h"
+#include "gl2d.h"
 #include "image.h"
 #include "soundbank.h"
 #include "soundbank_bin.h"
@@ -35,18 +31,40 @@ void OpenBrowser(char* url) {
 	// soon:tm:
 }
 
+// how to handle errors 101
+void Error(char* message) {
+	int keyPressed;
+	swiWaitForVBlank();
+	consoleClear();
+	iprintf("An error occurred: %s\n(A) Reload (B) Exit");
+	do {
+		scanKeys();
+		keyPressed = keysDown();
+		if (keyPressed & KEY_A ) main();
+		if (keyPressed & KEY_B) exit(0);
+	} while(1);
+}
+
 void Save(struct Settings settings) {
-	// soon:tm:
+	iprintf("FAT not working yet :(");
+	return;
+	/*if(!fatInitDefault()) Error("Failed to initialize SD Card.");	
+	else {
+		iprintf("\nInitialized SD Card. Saving data...");
+		// nothing yet :(
+		iprintf("\nDone.");
+		return;
+	}*/
 }
 
 void ConnectIRC(struct Settings settings) {
-    if(!Wifi_InitDefault(WFC_CONNECT)) {
-		iprintf("Failed to initialize the WiFi connection!");
-		return 1;
-	} else {
+	iprintf("WiFi not working yet :(");
+	return;
+    /*if(!Wifi_InitDefault(true)) Error("Failed to initialize the WiFi connection!");
+	else {
 		iprintf("\nConnected to the Internet, time to connect to the IRC server.");
-		// Server connection stuff
-	}
+		// nothing yet :(
+	}*/
 }
 
 int main(void) {
@@ -72,22 +90,14 @@ int main(void) {
 		
 		// At least you can set something.
 		struct Settings settings;
-	    char* name; // I think that's enough.
-		char* server; // urls can't be longer, can they?
-		char* channel; // the channel name should be short.
 		
 		// So lemme spy on you for a short time
 		iprintf("\nWhat's your Username?\n");
-		scanf("%s", name);
+		scanf("%s", settings.Name);
 		iprintf("\n What IRC server do you want to connect to?\n");
-		scanf("%s", server);
+		scanf("%s", settings.Server);
 		iprintf("\nWhat IRC channel do you want to use?\n");
-		scanf("%s", channel);
-		
-		// So let's create the actual settings object.
-		strcpy(settings.Name, name);
-		strcpy(settings.Server, server);
-		strcpy(settings.Channel, channel);
+		scanf("%s", settings.Channel);
 
 		// Good clean fun:tm:
 		swiWaitForVBlank();
@@ -105,11 +115,9 @@ int main(void) {
 			keyPressed = keysDown();
 			if (keyPressed & KEY_A ) {
 				Save(settings);
-				Connect(settings);
+				ConnectIRC(settings);
 			}
-			if (keyPressed & KEY_B) {
-				Connect(settings);
-			} 
+			if (keyPressed & KEY_B) ConnectIRC(settings);
 			if (keyPressed & KEY_START) break;
 		} while(1);
 

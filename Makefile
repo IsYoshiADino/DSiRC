@@ -8,12 +8,19 @@ endif
 
 include $(DEVKITARM)/ds_rules
 
+#---------------------------------------------------------------------------------
+# Build properties
+#---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
 SOURCES		:=	source
 INCLUDES	:=	include
 MUSIC       :=  audio
 GRAPHICS	:=	graphics
+
+#---------------------------------------------------------------------------------
+# Compiler properties
+#---------------------------------------------------------------------------------
 ARCH		:=	-mthumb -mthumb-interwork
 CFLAGS	:=	-g -Wall -O2\
  			-march=armv5te -mtune=arm946e-s -fomit-frame-pointer\
@@ -23,7 +30,11 @@ CFLAGS	+=	$(INCLUDE) -DARM9
 CXXFLAGS	:=	$(CFLAGS) -fno-rtti -fno-exceptions
 ASFLAGS	:=	-g $(ARCH)
 LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
-LIBS	:= -lmm9 -lnds9
+
+#---------------------------------------------------------------------------------
+# Used libraries
+#---------------------------------------------------------------------------------
+LIBS	:= -lnds9 -ldswifi9 -lmm9 #-lfat
 LIBDIRS	:=	$(LIBNDS)
 
 #---------------------------------------------------------------------------------
@@ -63,12 +74,14 @@ export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
 #---------------------------------------------------------------------------------
 $(BUILD):
+#---------------------------------------------------------------------------------
 	@[ -d $@ ] || mkdir -p $@
-	@$(MAKE) BUILDDIR=`cd $(BUILD) && pwd` --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	@$(MAKE) BUILDDIR=`cd $(BUILD) && pwd` -C $(BUILD) -f $(CURDIR)/Makefile
 	@ndstool -c $(TARGET).nds -9 $(TARGET).elf -b icon.bmp "DSiRC;A simple IRC client.;Apfel" -g DSRC 01 "DSiRC" -z 00051004 -u 00030015 
 
 #---------------------------------------------------------------------------------
 clean:
+#---------------------------------------------------------------------------------
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds
 
@@ -83,11 +96,14 @@ $(OUTPUT).elf	:	$(OFILES)
 $(OFILES_SOURCES) : $(HFILES)
 
 #---------------------------------------------------------------------------------
+# Audio bank generation
+#---------------------------------------------------------------------------------
 soundbank.bin soundbank.h : $(AUDIOFILES)
 	@mmutil $^ -d -osoundbank.bin -hsoundbank.h
 
 #---------------------------------------------------------------------------------
 %.bin.o	%_bin.h :	%.bin
+#---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)
 
@@ -95,6 +111,7 @@ soundbank.bin soundbank.h : $(AUDIOFILES)
 
 #---------------------------------------------------------------------------------
 %.s %.h	: %.png %.grit
+#---------------------------------------------------------------------------------
 	grit $< -fts -o$*
 
 -include $(DEPENDS)
