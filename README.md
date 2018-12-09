@@ -11,3 +11,7 @@ Currently being worked on. I would love to see you contributing to this project!
 | Opening URLs in the DSi Web browser       | No              |
 | Showing supported image file types        | No              |
 | Server list and configuration files       | No              |
+
+## Compile DSiRC
+1. Install [devkitPro](http://devkitPro.org)
+1. Execute the `DSiRC.sh` file.

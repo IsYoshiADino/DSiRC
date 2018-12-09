@@ -34,7 +34,7 @@ LDFLAGS	=	-specs=ds_arm9.specs -g $(ARCH) -Wl,-Map,$(notdir $*.map)
 #---------------------------------------------------------------------------------
 # Used libraries
 #---------------------------------------------------------------------------------
-LIBS	:= -lnds9 -ldswifi9 -lmm9 #-lfat
+LIBS	:= -lnds9 -ldswifi9 -lmm9 -lfat
 LIBDIRS	:=	$(LIBNDS)
 
 #---------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) BUILDDIR=`cd $(BUILD) && pwd` -C $(BUILD) -f $(CURDIR)/Makefile
-	@ndstool -c $(TARGET).nds -9 $(TARGET).elf -b icon.bmp "DSiRC;A simple IRC client.;Apfel" -g DSRC 01 "DSiRC" -z 00051004 -u 00030015 
+	@ndstool -c $(TARGET).nds -9 $(TARGET).elf -b icon.bmp "DSiRC;A simple IRC client.;Apfel" -g DSRC 01 "DSiRC" -u 00030015-5364334E
 
 #---------------------------------------------------------------------------------
 clean:
