@@ -17,59 +17,21 @@
 
 static mm_sound_effect notify = { { SFX_NOTIFY }, (int)(1.0f * (1<<10)), 0, 255, 255, };
 
-struct Settings {
-	char* Name; // The Username for the User, of course.
-	char* Server; // We need something which can get our IP in the end.
-	char* Channel; // Just so we don't feel lonely.
+static struct Settings {
+	char Name[64]; // The Username for the User, of course.
+	char Server[64]; // We need something which can get our IP in the end.
+	char Channel[64]; // Just so we don't feel lonely.
 };
 
-void OnKeyPressed(int key) {
-	if(key > 0) iprintf("%c", key);
-}
-
-void OpenBrowser(char* url) {
-	// soon:tm:
-}
-
-// how to handle errors 101
-void Error(char* message) {
-	int keyPressed;
-	swiWaitForVBlank();
-	consoleClear();
-	iprintf("An error occurred: %s\n(A) Reload (B) Exit");
-	do {
-		scanKeys();
-		keyPressed = keysDown();
-		if (keyPressed & KEY_A ) main();
-		if (keyPressed & KEY_B) exit(0);
-	} while(1);
-}
-
-void Save(struct Settings settings) {
-	iprintf("FAT not working yet :(");
-	return;
-	/*if(!fatInitDefault()) Error("Failed to initialize SD Card.");	
-	else {
-		iprintf("\nInitialized SD Card. Saving data...");
-		// nothing yet :(
-		iprintf("\nDone.");
-		return;
-	}*/
-}
-
-void ConnectIRC(struct Settings settings) {
-	iprintf("WiFi not working yet :(");
-	return;
-    /*if(!Wifi_InitDefault(true)) Error("Failed to initialize the WiFi connection!");
-	else {
-		iprintf("\nConnected to the Internet, time to connect to the IRC server.");
-		// nothing yet :(
-	}*/
-}
+void ConnectIRC();
+void Error();
+void Save();
+void OnKeyPressed(int key);
+void OpenBrowser(char* url);
 
 int main(void) {
 	defaultExceptionHandler(); // just to save us from cancer
-	
+
 	videoSetMode(MODE_5_2D);
 	videoSetModeSub(MODE_0_2D);
 	vramSetBankA(VRAM_A_MAIN_BG);
@@ -94,7 +56,7 @@ int main(void) {
 		// So lemme spy on you for a short time
 		iprintf("\nWhat's your Username?\n");
 		scanf("%s", settings.Name);
-		iprintf("\n What IRC server do you want to connect to?\n");
+		iprintf("\nWhat IRC server do you want to connect to?\n");
 		scanf("%s", settings.Server);
 		iprintf("\nWhat IRC channel do you want to use?\n");
 		scanf("%s", settings.Channel);
@@ -107,7 +69,7 @@ int main(void) {
 		int keyPressed;
 
 		// Let the user choose something.
-		iprintf("Current settings:\nName: %s\nServer: %s\nChannel: %s\n\nWould you like to save your settings?\n(A) Yes  (B) No  (START) Return", settings.Name, settings.Server, settings.Channel);
+		iprintf("Current settings:\n\nName: %s\nServer: %s\nChannel: %s\n\nWould you like to save your settings?\n(A) Yes  (B) No  (START) Return", settings.Name, settings.Server, settings.Channel);
 		do {
 			swiWaitForVBlank();
 			scanKeys();
@@ -127,3 +89,46 @@ int main(void) {
 	}
 	return 0;
 }
+
+void ConnectIRC(struct Settings settings) {
+	Error("WiFi not working yet.");
+    /*if(!Wifi_InitDefault(true)) Error("Failed to initialize the WiFi connection!");
+	else {
+		iprintf("\nConnected to the Internet, time to connect to the IRC server.");
+		// nothing yet :(
+	}*/
+}
+
+// how to handle errors 101
+void Error(char message[64]) {
+	int keyPressed;
+	swiWaitForVBlank();
+	consoleClear();
+	iprintf("An error occurred: %s\n(A) Reload (B) Exit", message);
+	do {
+		scanKeys();
+		keyPressed = keysDown();
+		if (keyPressed & KEY_A ) main();
+		if (keyPressed & KEY_B) exit(0);
+	} while(1);
+}
+
+void OnKeyPressed(int key) {
+	if(key > 0) iprintf("%c", key);
+}
+
+void OpenBrowser(char* url) {
+	// soon:tm:
+}
+
+void Save(struct Settings settings) {
+	Error("FAT not working yet.");
+	/*if(!fatInitDefault()) Error("Failed to initialize SD Card.");	
+	else {
+		iprintf("\nInitialized SD Card. Saving data...");
+		// nothing yet :(
+		iprintf("\nDone.");
+		return;
+	}*/
+}
+
