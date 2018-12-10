@@ -1,5 +1,5 @@
 //#include <dswifi9.h>
-#include <fat.h>
+//#include <fat.h>
 #include <maxmod9.h>
 #include <nds.h>
 #include <netdb.h>
@@ -20,6 +20,7 @@ static mm_sound_effect notify = { { SFX_NOTIFY }, (int)(1.0f * (1<<10)), 0, 255,
 static struct Settings {
 	char Name[64]; // The Username for the User, of course.
 	char Server[64]; // We need something which can get our IP in the end.
+	int Port;
 	char Channel[64]; // Just so we don't feel lonely.
 };
 
@@ -37,7 +38,7 @@ int main(void) {
 	vramSetBankA(VRAM_A_MAIN_BG);
 	
 	consoleDemoInit();
-	
+
 	mmInitDefaultMem((mm_addr)soundbank_bin);
 	mmLoadEffect(SFX_NOTIFY);
 	
@@ -58,6 +59,8 @@ int main(void) {
 		scanf("%s", settings.Name);
 		iprintf("\nWhat IRC server do you want to connect to?\n");
 		scanf("%s", settings.Server);
+		iprintf("\nWhat's the port used for the Server?\n");
+		scanf("%s", settings.Port);
 		iprintf("\nWhat IRC channel do you want to use?\n");
 		scanf("%s", settings.Channel);
 
@@ -93,10 +96,11 @@ int main(void) {
 void ConnectIRC(struct Settings settings) {
 	Error("WiFi not working yet.");
     /*if(!Wifi_InitDefault(true)) Error("Failed to initialize the WiFi connection!");
-	else {
-		iprintf("\nConnected to the Internet, time to connect to the IRC server.");
-		// nothing yet :(
-	}*/
+	iprintf("\nConnected to the Internet, time to connect to the IRC server.");
+	irc_session_t IRCsession;
+	if(irc_connect(NULL, settings.Server, settings.Port, NULL, NULL, settings.Name, "DSiRC User") != 0) Error("Failed to connect to the IRC Server.");
+	if(irc_cmd_join(NULL, settings.Channel, NULL) != 0) Error("Failed to connect to the IRC Channel.");*/
+
 }
 
 // how to handle errors 101
